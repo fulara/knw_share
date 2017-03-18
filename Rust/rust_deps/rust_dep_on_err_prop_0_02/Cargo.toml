@@ -1,0 +1,7 @@
+[package]
+name = "rust_dep_on_err_prop_0_02"
+version = "0.1.0"
+authors = ["Olek <ntszar@gmail.com>"]
+
+[dependencies]
+err_prop = "0.0.2"
