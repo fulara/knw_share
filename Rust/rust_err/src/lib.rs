@@ -25,7 +25,7 @@ fn execute_op() -> Result<(), MyErrors> {
             use_file(&f);
             Ok(()) 
         },
-        _ => Err(MyErrors::OpenFail),
+        Err(_) => Err(MyErrors::OpenFail),
     }
 }
 
@@ -36,13 +36,13 @@ fn open_file_use() {
     match execute_op() {
         Ok(_) => println!("op succesful."),
         Err(e) => {
-            println!("op failed. getting specific err.");
+            println!("op failed. getting specific err. {}", e.to_strng());
             match e {
                 MyErrors::Whatever => {
                     println!("got whatever.");
                 }
                 MyErrors::OpenFail => {
-                    println!("ok open file failed");
+                    println!("ok open file failed {}");
                 }
             }
         }

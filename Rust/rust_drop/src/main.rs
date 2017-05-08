@@ -9,12 +9,13 @@ impl<'a> Foo<'a> {
             r: jakis_int
         }
     }
+
+    fn metoda(&self) {}
 }
 
 impl<'a> Drop for Foo<'a> {
     fn drop(&mut self) {
         *self.r = 0;
-        self.r.
     }
 }
 
@@ -24,6 +25,7 @@ fn main() {
     println!("x {}", x);
     {
         let foo = Foo::new(&mut x);
+        foo.metoda;
     }
     println!("x {}", x);
 }
