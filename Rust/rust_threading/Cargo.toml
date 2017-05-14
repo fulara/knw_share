@@ -1,0 +1,6 @@
+[package]
+name = "rust_threading"
+version = "0.1.0"
+authors = ["Olek <ntszar@gmail.com>"]
+
+[dependencies]
