@@ -12,6 +12,7 @@ struct Foo {
 #[cfg(test)]
 mod tests {
     use std::sync::{Arc, Mutex};
+    use std::rc::Rc;
     use std::sync::atomic::{AtomicBool, Ordering};
     use std::thread;
     use std::time;
@@ -25,6 +26,19 @@ mod tests {
 
         handle.join();
         println!("hello from main thread");
+    }
+
+    #[test]
+    fn rc_cannot_be_transferred() {
+        let foo = Rc::new(Foo { v: 1 });
+
+        /*let handle = {
+            let foo = foo.clone();
+            thread::spawn(move || {
+                println!("foo {:?}", foo);
+            })
+        };
+        handle.join(); */
     }
 
     #[test]
