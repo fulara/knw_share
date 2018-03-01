@@ -53,16 +53,7 @@ struct Foo {
 
 //add behavior to Foo class.
 impl Foo {
-	fn static_method() {}
-	//member methods are declared with self keyword as a first argument.
-	//this one borrows self.
-	fn member_method(&self) {}
-	
-	//self taken by value - consumes ( or copies ) self.
-	fn member_method_consuming(self) {}
-	
-	//modifyies self.
-	fn member_method_modifying(&mut self) {}
+	fn member_method(&self) {}	
 }
 ```
 
