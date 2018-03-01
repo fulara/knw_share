@@ -3,18 +3,12 @@ On this talk I will present my favorites features in the language.
 Lets talk about this mentioned beforehand safety..  
 ## Pointer safety.
 
-Probably my most favorite feature in the language is... No more pointers!
-Meaning.. in most of the code you wont see any pointers, just references ( C++ like references).
-And whats the main advantage of references? Well, if they are given to you then it means that the pointed to object exists!
-Yep, there is no null pointer int he language at all.
+In Rust you dont have to deal with Pointers.
 
-Lets look at case in C.
-
+Lets compare C++ and C cases.
 ```C++
 void foo(std::unique_ptr<int> p) {
-    //so in c++ this may be.
-	// yey! we were succesful in modifying some pointer value!
-	//p could've been null, coredump :(
+    //can crash, can ub, or can succeed
 	*p = 3;
 }
 ```
@@ -22,8 +16,8 @@ void foo(std::unique_ptr<int> p) {
 ```rust
 //in rust Box is equvalent to C++'s std::unique_ptr
 fn foo(p : Box<i32>) {
-    //if we were given Box that means that its safe to modify it.
-    *p = 3;
+    //its safe!
+	*p = 3;
 }
 ```
 
@@ -49,25 +43,14 @@ fn accept_ref(r : &i32) {}
 //      Some(T),
 //      None,
 // }
-// will talk more about enums later.
 
 // }
 fn foo(p : Option<&i32>) {
-     //*p = 3 wont compile :( 
+     //*p = 3 wont compile!
 	 
-	 //we can print it without checking!
-	 //btw: we would get compiler error here if type stored in option would be not printable
-	 // :( towards java - if you dont implement toString() then ... you probably wont get the behavior you expected.
-	 println!("print: {:?}", p);
-	 
-	 //in order to access the value we need to..
-	 
-	 //yep, no parenthesis required.
 	 if p.is_some() {
-		//specified type for *clarity* 
-		//so we used unwrap here. using unwrap is usually considered bad practice, sometimes unavoidable tho.
-		//we've checked here is_some() - so we know that we'll be fine.
-	    let v : &i32 = p.unwrap();
+	    //unwrap is bad practice
+        let v : &i32 = p.unwrap();
 		accept_ref(v);
 	}
 	
@@ -77,9 +60,7 @@ fn foo(p : Option<&i32>) {
 	    accept_ref(p);
 	}
 	
-	//note: if let is really syntactic sugar for match:
-	//lets look at match equivalent.
-	//match is somewhat similar to switch case, however much more powerful. uses pattern matching.
+	//match - expanded if let.
 	match p {
 		//match Some(_) pattern.
 		Some(p) => {
@@ -94,8 +75,8 @@ fn foo(p : Option<&i32>) {
 ```
 
 C++ example:
-```rust 
-//lets assumee that we are working with c++17 here.
+```C++ 
+//btw, working with C++ references:
 void foo(p : std::option<int>) {
     //we dont need to do any checking.. we can just use it.
 	//c'mon - someone checked that option above..

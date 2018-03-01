@@ -1,8 +1,7 @@
 # enums.
-On this talk I will present my favorites features in the language.  
-Enum - or algebraic data types.  
+Enum - In Rust they are really an [algebraic data types](https://en.wikipedia.org/wiki/Algebraic_data_type).  
 
-In Rust there is enum.
+In Rust there is enum!
 ```rust
 enum Enum {
    One,
@@ -11,7 +10,7 @@ enum Enum {
 }
 ```
 
-They provide similar functionality to C++' variants
+They provide similar functionality to C++' variants, Where you can bind additional data to enum variants.
 
 ```rust	
 struct CustomData {
@@ -29,11 +28,22 @@ enum Msg {
 	D,
 }
 
+//However there is language support allowing you to match on these.
+fn msg_handler(m : Msg) {
+    match m {
+		Msg::A(i) => println!("got A {}", i),
+		Msg::B(txt, i) => println!("got B txt: {}, i {}", txt, i),
+		Msg::C(data) => println!("got C {}", data.something),
+		Msg::D => println!("got D."),
+		//note: because did not add _ we would get compiler error if we added another variant to enum.
+	}
+}
+
 fn use_msg_just_c(m : Msg) {
     //so lets unpack Msg however we only care about C!
     match m {
 	    //pattern matching helps us - unpacks data into variable.
-	    C(custom_data) => {
+	    Msg::C(custom_data) => {
 		    println!("yupi, got C with {}", custom_data.something);
 		}
 		
@@ -44,29 +54,20 @@ fn use_msg_just_c(m : Msg) {
 	}    
 } 
 
-fn msg_handler(m : Msg) {
-    match m {
-		A(i) => println!("got A {}", i);
-		B(txt, i) => println!("got B txt: {}, i {}", txt, i);
-		C(data) => println!("got C {}", data.something);
-		D => println!("got D.");
-		//note: because did not add _ we would get compiler error if we added another variant to enum.
-	}
-}
-
 fn main() {
 	println!("\n1:");
 	use_msg_just_c(Msg::A(1));
 	println!("\n2:");
-	use_msg_just_c(Msg::C(CustomData { something : 4}));
+	use_msg_just_c(Msg::C(CustomData { something : String::from("super-string")}));
 	
 	println!("\n3:");
-	msg_handler(Msg::C(CustomData { something : 4}));
+	msg_handler(Msg::C(CustomData { something : String::from("some-string")}));
 	println!("\n4:");
 	msg_handler(Msg::B(String::from("abc"), 5));
 }
 ```
 
+Additional info...
 These can also be used similarly to C/C++ enums
 ```rust
 // we can cast it int.

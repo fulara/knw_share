@@ -1,6 +1,5 @@
 # code deriving.
-On this talk I will present my favorites features in the language.  
-A small bit about code generation.  
+A small bit about code generation - or more specifically about deriving.
 
 
 Rust allow user to define recipes, that will be used to generate code.
@@ -9,7 +8,6 @@ Can be used for..
 * linting - check clippy.
 
 Why I am talking about this? Well. lets look at most common case.
-
 
 Imagine having a simple struct.
 ```rust
@@ -39,6 +37,7 @@ struct Mine {
 }
 
 fn print_mine(m : &Mine) {
+    //:? is a special instruction for println to use Debug.
 	println!("{:?}", m);
 }
 
@@ -46,6 +45,22 @@ fn main() {
 	print_mine(&Mine { f : String::from("some_string"), a : 1, d : 1.0}); 
 }
 ```
+
+using derive allows you to easily assert your classes.
+
+```rust
+#[derive(Debug, PartialEq)]
+struct MyClass {
+	field : i32
+}
+
+fn main() {
+    let mc1 = MyClass { field : 2 };
+	let mc2 = MyClass { field : 3};
+	assert_eq!(mc1,mc2);
+}
+```
+
 
 Derive is procedural macro which allows you to implement set of functionalities.
 It generates code during compilation time - so has no overhead on runtime.
@@ -57,34 +72,8 @@ Rust by default provides range of derives.. some that come to mind are:
 
 Want to make your type as a key in map? just add PartialOrd or Hash to it!
 
-I've added derive that implement my trait for enums. which looked something like..
-```rust
-trait SmartEnum {
-    //returns how many variants there are in that enum.
-    const SIZE : usize;
-	
-	//get an array of all possible variables in enum
-	fn values() -> &[SmartEnum];
-	fn from_i32() -> Option<SmartEnum>;
-}
-
-usage was:
-
-#[derive(SmartEnum)]
-enum E {
-	A,
-	B,
-	C,
-}
-
-//now i can use from_i32  values() and size for E enum!
-
-```
-
-
-
 More advanced case.
-One of the best looking cases of proc_macros I've seen is [rocket library](link_to_rocker).
+One of the best looking cases of proc_macros I've seen is [rocket library](https://rocket.rs/guide/getting-started/#hello-world).
 
 My colleague implemented for fun what we think is proper FIX library  using proc_macros.
 In that library you specified FIX messages as follows:
@@ -109,15 +98,25 @@ fn test_it() {
 
 ```
 
-
-using derive allows you to easily assert your classes.
-
+I've added derive that implement my trait for enums. which looked something like..
 ```rust
-#[derive(Debug, PartialEq)]
-struct MyClass {
-	field : i32
+trait SmartEnum {
+    //returns how many variants there are in that enum.
+    const SIZE : usize;
+	
+	//get an array of all possible variables in enum
+	fn values() -> &[SmartEnum];
+	fn from_i32() -> Option<SmartEnum>;
 }
 
-fn main() {
-	assert_eq!(MyClass { field : 2 }, MyClass { field : 3});
+//usage was:
+
+//now i can use from_i32  values() and size for E enum!
+#[derive(SmartEnum)]
+enum E {
+	A,
+	B,
+	C,
 }
+
+```
