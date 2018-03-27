@@ -10,5 +10,5 @@ fn simple_move() {
 
 //    println!("Here's a vector: {:?}", v);
 
-    handle.join();
+    handle.join().unwrap();
 }
