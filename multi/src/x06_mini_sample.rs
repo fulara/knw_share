@@ -30,6 +30,7 @@ impl<'a> InformingWorker<'a> {
     }
 
     fn do_and_inform(&mut self, job : i32) {
+
         self.listener.job_done(job + 1);
     }
 }
@@ -71,92 +72,47 @@ fn mini_sample() {
 
 
 
-struct InformingWorkerAsync {
-    listener : Arc<Mutex<Listener>>,
-    sender : Sender<i32>,
-
-    worker_thread : JoinHandle<()>,
-}
-
-impl InformingWorkerAsync {
-    fn new(listener : Arc<Mutex<Listener>>) -> InformingWorkerAsync {
-
-        let (tx, rx) = channel();
-        let cloned = listener.clone();
-        let worker_thread = thread::spawn(move ||{
-            let mutex = cloned;
-
-            for job in rx {
-                mutex.lock().unwrap().job_done(job + 1);
-            }
-        });
-
-        InformingWorkerAsync {
-            listener,
-            worker_thread,
-            sender : tx,
-        }
-    }
-
-    fn do_and_inform(&mut self, job : i32) {
-
-        let listener = self.listener.clone();
-        self.sender.send(job);
-    }
-}
-
-#[test]
-fn mini_sample_cheatsheet() {
-    let listener = Listener {};
-    let listener = Arc::new(Mutex::new(listener));
-    let mut worker = InformingWorkerAsync::new(listener);
-
-    worker.do_and_inform(1);
-
-    sleep_ms(1000);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#[test]
-fn channels_cheatsheet() {
-//    let (tx, rx) = channel();
+//struct InformingWorkerAsync {
+//    listener : Arc<Mutex<Listener>>,
+//    sender : Sender<i32>,
 //
-//    let handle = thread::spawn(move|| {
-//        loop {
-//            tx.send("hai hai");
+//    worker_thread : JoinHandle<()>,
+//}
 //
-//            sleep_ms(1000);
+//impl InformingWorkerAsync {
+//    fn new(listener : Arc<Mutex<Listener>>) -> InformingWorkerAsync {
+//
+//        let (tx, rx) = channel();
+//        let cloned = listener.clone();
+//        let worker_thread = thread::spawn(move ||{
+//            let mutex = cloned;
+//
+//            for job in rx {
+//                mutex.lock().unwrap().job_done(job + 1);
+//            }
+//        });
+//
+//        InformingWorkerAsync {
+//            listener,
+//            worker_thread,
+//            sender : tx,
 //        }
-//    });
-//
-//    for d in rx {
-//        println!("hai from main thread...!");
 //    }
-}
+//
+//    fn do_and_inform(&mut self, job : i32) {
+//
+//        let listener = self.listener.clone();
+//        self.sender.send(job);
+//    }
+//}
+//
+//#[test]
+//fn mini_sample_cheatsheet() {
+//    let listener = Listener {};
+//    let listener = Arc::new(Mutex::new(listener));
+//    let mut worker = InformingWorkerAsync::new(listener);
+//
+//    worker.do_and_inform(1);
+//
+//    sleep_ms(1000);
+//}

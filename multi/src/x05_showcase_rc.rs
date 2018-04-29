@@ -8,26 +8,26 @@ use std::sync::Mutex;
 
 #[test]
 fn rc_showcase() {
-    let m = Arc::new(Mutex::new(Vec::new()));
-
-    for i in 0 .. 10 {
-        let m = m.clone();
-        thread::spawn(move || {
-            let mut data = m.lock().unwrap();
-            println!("thread {} woke up and doing extensive work.", i);
-            sleep_ms(500);
-            data.push(i);
-        });
-    }
-
-    loop {
-        {
-            let data : &Vec<i32> = &m.lock().unwrap();
-            println!("main thread is peeking at data! {:?}", data);
-        }
-
-        sleep_ms(1000);
-    }
+//    let m = Rc::new(Mutex::new(Vec::new()));
+//
+//    for i in 0 .. 10 {
+//        let m = m.clone();
+//        thread::spawn(move || {
+//            let mut data = m.lock().unwrap();
+//            println!("thread {} woke up and doing extensive work.", i);
+//            sleep_ms(500);
+//            data.push(i);
+//        });
+//    }
+//
+//    loop {
+//        {
+//            let data : &Vec<i32> = &m.lock().unwrap();
+//            println!("main thread is peeking at data! {:?}", data);
+//        }
+//
+//        sleep_ms(1000);
+//    }
 }
 
 

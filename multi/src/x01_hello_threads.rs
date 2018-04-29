@@ -10,7 +10,7 @@ fn hello_threads() {
         }
     });
 
-    let _ = h.join();
+    h.join();
 
     for i in 1..5 {
         println!("hi number {} from the main thread!", i);

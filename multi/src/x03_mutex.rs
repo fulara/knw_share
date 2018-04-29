@@ -9,8 +9,9 @@ fn mutex_silly_sample() {
     let m = Mutex::new(5);
 
     {
-        let mut num = m.lock().unwrap();
-        *num = 6;
+        if let Ok(mut num) = m.lock() {
+            *num = 6;
+        }
     }
 
     println!("m = {:?}", m);
@@ -20,13 +21,22 @@ fn mutex_silly_sample() {
 
 #[test]
 fn mutex_sharing_data() {
-//    let v: Vec<i32> = Vec::new();
+//    let mut v = Arc::new(Mutex::new(Vec::new()));
 //
-//    //finish me - write a program that modifies that vector.
+//    for i in 0 .. 10 {
+//        let mut arc = v.clone();
+//        thread::spawn(move || {
+//
+//            let v : &mut Vec<i32> = &mut arc.lock().unwrap();
+//            sleep_ms(500);
+//            v.push(i);
+//            println!("worker thread has finished {:?}", v);
+//        });
+//    }
 //
 //    loop {
 //        {
-//            let data: &Vec<i32> = unimplemented!();
+//            let data : &Vec<i32>  = &v.lock().unwrap();
 //            println!("main thread is peeking at data! {:?}", data);
 //        }
 //
@@ -58,9 +68,10 @@ fn mutex_sharing_data() {
 
 #[test]
 fn mutex_shared_multiple_threads() {
-//    let m = Mutex::new(Vec::new());
+//    let m = Arc::new(Mutex::new(Vec::new()));
 //
 //    for i in 0 .. 10 {
+//        let m = m.clone();
 //        thread::spawn(move || {
 //            let mut data = m.lock().unwrap();
 //            println!("thread {} woke up and doing extensive work.", i);

@@ -9,6 +9,7 @@ mod x03_mutex;
 mod x04_channels;
 mod x05_showcase_rc;
 mod x06_mini_sample;
+mod x07_appendix_scoped;
 
 #[cfg(test)]
 mod tests {
