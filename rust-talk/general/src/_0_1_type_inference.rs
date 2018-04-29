@@ -6,16 +6,14 @@ fn foo() {
 }
 
 fn foo2() {
-    let force : Vec<i32> = Vec::new();
+    let force: Vec<i32> = Vec::new();
 }
 
-//unlike C++ each function has to compile on its own.
+//unlike C++ each function has to stand on its own.
 //remember these compilation error that have stacktraces of 30 lvls and go up to <memory>?
-fn foo3<T>(t : T) {
+fn foo3<T>(t: T) {
     //i cant use methods from T, because I didnt put any trait requirement.
 }
 
 #[test]
-fn test_it() {
-
-}
+fn test_it() {}

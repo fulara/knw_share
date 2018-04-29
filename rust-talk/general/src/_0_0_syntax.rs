@@ -55,6 +55,9 @@ impl Foo {
             b,
             c: 3,
         }
+
+        // btw I think that Class { list... } is best way out there to create objects.
+        // C++ however discards that.
     }
 
     fn memberwise_clone(&self) -> Self {
@@ -63,6 +66,8 @@ impl Foo {
 
     fn partial_memberwise_clone(&self) -> Self {
         Self { a: 10, ..*self }
+
+
     }
 
     //clear distrinction between mutable methods and mutable.
@@ -105,5 +110,3 @@ impl Clone for Foo {
         unimplemented!()
     }
 }
-
-
