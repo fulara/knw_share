@@ -1,0 +1,9 @@
+[package]
+name = "general"
+version = "0.1.0"
+authors = ["Olek <ntszar@gmail.com>"]
+
+[dependencies]
+log = "0.4"
+simple_logger = "*"
+smart_enum_derive = {path = "smart_enum_derive" }
