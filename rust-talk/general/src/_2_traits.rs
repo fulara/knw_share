@@ -1,4 +1,6 @@
-trait SomeTrait {
+use std::fmt::Debug;
+
+trait TraitUsedStatically {
     const SOME_VALUE: i64;
 
     fn do_it();
@@ -8,8 +10,12 @@ trait SomeTrait {
     fn with_default() {}
 }
 
+trait TraitUsedDynamically {
+    fn do_that(&self);
+}
+
 // each invocation for different object genertes code for that function
-fn monomorphization<T : SomeTrait>(t : &mut T) where T : Debug {
+fn monomorphization<T : TraitUsedStatically>(t : &mut T) where T : Debug {
     let x = T::create();
     t.do_that();
 
@@ -20,16 +26,16 @@ fn monomorphization<T : SomeTrait>(t : &mut T) where T : Debug {
 // dynamic dispatch.
 // fat pointer.
 // debug!
-fn dynamic_dispatch(t : &mut SomeTrait) {
-    let x = T::create();
+fn dynamic_dispatch(t : &mut TraitUsedDynamically) {
     t.do_that();
 }
 
+#[derive(Debug)]
 struct Foo {
 
 }
 
-impl SomeTrait for Foo {
+impl TraitUsedStatically for Foo {
     const SOME_VALUE: i64 = 3;
 
     fn do_it() {
@@ -44,6 +50,12 @@ impl SomeTrait for Foo {
         println!("create");
 
         Foo {}
+    }
+}
+
+impl TraitUsedDynamically for Foo {
+    fn do_that(&self) {
+        println!("do that_dynamic(&self)");
     }
 }
 
